@@ -3,16 +3,14 @@ package br.com.ml.testml.business;
 import br.com.ml.testml.exception.MutantException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class MutantBusiness {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MutantBusiness.class);
 
-    private boolean achouLinha;
-    private int contadorLinha;
     private int countDna;
     private String wordSize;
     private char[][] verifyMutant;
@@ -22,13 +20,16 @@ public class MutantBusiness {
     private static final int LINE_1 = 1;
     private static final int LINE_2 = 2;
     private static final int LINE_3 = 3;
-
+    private Map<MutantType, MutantFound> mutantFound;
     private String[] dna;
 
     private MutantBusiness() {
-        this.achouLinha = true;
-        this.contadorLinha = 3;
+        this.mutantFound = new HashMap<>();
         this.countDna = 0;
+        this.mutantFound.put(MutantType.LINE, new MutantFound(false, 0, 0));
+        this.mutantFound.put(MutantType.COLUMN, new MutantFound(false, 0, 0));
+        this.mutantFound.put(MutantType.DIAGONAL, new MutantFound(false, 0, 0));
+        this.mutantFound.put(MutantType.DIAGONALREVERSE, new MutantFound(false, 0, 0));
     }
 
     public static MutantBusiness getMutant(String[] dna) throws MutantException {
@@ -50,80 +51,116 @@ public class MutantBusiness {
             if (countDna >= 2) {
                 return true;
             }
+            this.initializeColumn();
+            this.initializeDiagonal();
+            this.initializeDiagonalReverse();
+            this.initializeLine();
         }
         return false;
     }
 
     void isMutantValid() throws MutantException {
+        int dnaLength = wordSize.length();
         boolean[] ret = {true};
-        Arrays.stream(dna).forEach(item -> {
-            if (!Pattern.matches("^[ATCG]*", item)) {
+        for (int item = 0; item < dna.length; item++) {
+            if (!Pattern.matches("^[ATCG]*", dna[item]) ||
+                    dna[item].length() != dnaLength) {
                 ret[0] = false;
+                break;
             }
-        });
+        }
+        if (!ret[0]) {
+            throw new MutantException();
+        }
         this.verifyMutant = new char[dna.length][wordSize.length()];
         for (int i = 0; i < dna.length; i++) {
             for (int j = 0; j < wordSize.length(); j++) {
                 verifyMutant[i][j] = dna[i].charAt(j);
             }
         }
-        if (!ret[0]) {
-            throw new MutantException();
-        }
     }
 
     void lines(int itLine, int itColumn, int size) {
-        if (achouLinha && (itColumn + 3) < size) {
-            if (sequenciaIgual( verifyMutant[itLine][itColumn],
-                                verifyMutant[itLine][itColumn + COLUMN_1],
-                                verifyMutant[itLine][itColumn + COLUMN_2],
-                                verifyMutant[itLine][itColumn + COLUMN_3])) {
-                LOGGER.debug("lines == %c,%c,%c,%c\n", verifyMutant[itLine][itColumn], verifyMutant[itLine][itColumn + COLUMN_1], verifyMutant[itLine][itColumn + COLUMN_2], verifyMutant[itLine][itColumn + COLUMN_3]);
+        if (!this.mutantFound.get(MutantType.LINE).found && (itColumn + COLUMN_3) < size) {
+            if (sequenciaIgual(verifyMutant[itLine][itColumn],
+                    verifyMutant[itLine][itColumn + COLUMN_1],
+                    verifyMutant[itLine][itColumn + COLUMN_2],
+                    verifyMutant[itLine][itColumn + COLUMN_3])) {
+                LOGGER.debug("lines == {},{},{},{}\n", verifyMutant[itLine][itColumn], verifyMutant[itLine][itColumn + COLUMN_1], verifyMutant[itLine][itColumn + COLUMN_2], verifyMutant[itLine][itColumn + COLUMN_3]);
                 countDna++;
-                achouLinha = false;
+                this.mutantFound.put(MutantType.LINE, new MutantFound(true, itLine, itColumn));
             }
-        } else if (!achouLinha) {
-            contadorLinha--;
-            if (contadorLinha == 0) {
-                achouLinha = true;
+        } else if (this.mutantFound.get(MutantType.LINE).found) {
+            this.mutantFound.get(MutantType.LINE).count--;
+            if (this.mutantFound.get(MutantType.LINE).count == 0) {
+                this.mutantFound.put(MutantType.LINE, new MutantFound(false, 0, 0));
             }
         }
     }
 
     void diagonalReverse(int itLine, int itColumn) {
-        if ((itLine - 3) >= 0 && (itColumn - 3) >= 0) {
-            if (sequenciaIgual( verifyMutant[itLine][itColumn],
-                                verifyMutant[itLine - LINE_1][itColumn - COLUMN_1],
-                                verifyMutant[itLine - LINE_2][itColumn - COLUMN_2],
-                                verifyMutant[itLine - LINE_3][itColumn - COLUMN_3])) {
-                LOGGER.debug("diagnonalReverse == %c,%c,%c,%c\n", verifyMutant[itLine][itColumn], verifyMutant[itLine - LINE_1][itColumn - COLUMN_1],
+        if (!this.mutantFound.get(MutantType.DIAGONALREVERSE).found && (itLine - LINE_3) >= 0 && (itColumn - COLUMN_3) >= 0) {
+            if (sequenciaIgual(verifyMutant[itLine][itColumn],
+                    verifyMutant[itLine - LINE_1][itColumn - COLUMN_1],
+                    verifyMutant[itLine - LINE_2][itColumn - COLUMN_2],
+                    verifyMutant[itLine - LINE_3][itColumn - COLUMN_3])) {
+                LOGGER.debug("diagnonalReverse == {},{},{},{}\n", verifyMutant[itLine][itColumn], verifyMutant[itLine - LINE_1][itColumn - COLUMN_1],
                         verifyMutant[itLine - LINE_2][itColumn - COLUMN_2], verifyMutant[itLine - LINE_3][itColumn - COLUMN_3]);
                 this.countDna++;
+                this.mutantFound.put(MutantType.DIAGONALREVERSE, new MutantFound(true, itLine, itColumn));
             }
         }
     }
 
     void diagonal(int itLine, int itColumn, int size) {
-        if ((itLine + 3) < size && (itColumn + 3) < size) {
-            if (sequenciaIgual( verifyMutant[itLine][itColumn],
-                                verifyMutant[itLine + LINE_1][itColumn + COLUMN_1],
-                                verifyMutant[itLine + LINE_2][itColumn + COLUMN_2],
-                                verifyMutant[itLine + LINE_3][itColumn + COLUMN_3])) {
-                LOGGER.debug("diagnonal == %c,%c,%c,%c\n", verifyMutant[itLine][itColumn], verifyMutant[itLine + LINE_1][itColumn + COLUMN_1], verifyMutant[itLine + LINE_2][itColumn + COLUMN_2], verifyMutant[itLine + 3][itColumn + COLUMN_3]);
+        if ((itLine + LINE_3) < size && (itColumn + COLUMN_3) < size) {
+            if (sequenciaIgual(verifyMutant[itLine][itColumn],
+                    verifyMutant[itLine + LINE_1][itColumn + COLUMN_1],
+                    verifyMutant[itLine + LINE_2][itColumn + COLUMN_2],
+                    verifyMutant[itLine + LINE_3][itColumn + COLUMN_3])) {
+                LOGGER.debug("diagnonal == {},{},{},{}\n", verifyMutant[itLine][itColumn], verifyMutant[itLine + LINE_1][itColumn + COLUMN_1], verifyMutant[itLine + LINE_2][itColumn + COLUMN_2], verifyMutant[itLine + 3][itColumn + COLUMN_3]);
                 this.countDna++;
+                this.mutantFound.put(MutantType.DIAGONAL, new MutantFound(true, itLine, itColumn));
             }
+
         }
     }
 
     void column(int itLine, int itColumn, int size) {
-        if ((itLine + 3) < size) {
-            if (sequenciaIgual( verifyMutant[itLine][itColumn],
-                                verifyMutant[itLine + LINE_1][itColumn],
-                                verifyMutant[itLine + LINE_2][itColumn],
-                                verifyMutant[itLine + LINE_3][itColumn])) {
-                LOGGER.debug("column == %c,%c,%c,%c\n", verifyMutant[itLine][itColumn], verifyMutant[itLine + LINE_1][itColumn], verifyMutant[itLine + LINE_2][itColumn], verifyMutant[itLine + LINE_3][itColumn]);
+        if ((itLine + LINE_3) < size) {
+            if (sequenciaIgual(verifyMutant[itLine][itColumn],
+                    verifyMutant[itLine + LINE_1][itColumn],
+                    verifyMutant[itLine + LINE_2][itColumn],
+                    verifyMutant[itLine + LINE_3][itColumn])) {
+                LOGGER.debug("column == {},{},{},{}\n", verifyMutant[itLine][itColumn], verifyMutant[itLine + LINE_1][itColumn], verifyMutant[itLine + LINE_2][itColumn], verifyMutant[itLine + LINE_3][itColumn]);
                 this.countDna++;
+                this.mutantFound.put(MutantType.COLUMN, new MutantFound(true, itLine, itColumn));
             }
+        }
+    }
+
+    void initializeLine() {
+        this.mutantFound.put(MutantType.LINE, new MutantFound(false, 0, 0));
+    }
+
+    void initializeColumn() {
+        this.mutantFound.get(MutantType.COLUMN).count--;
+        if (this.mutantFound.get(MutantType.COLUMN).count == 0) {
+            this.mutantFound.put(MutantType.COLUMN, new MutantFound(false, 0, 0));
+        }
+    }
+
+    void initializeDiagonal() {
+        this.mutantFound.get(MutantType.DIAGONAL).count--;
+        if (this.mutantFound.get(MutantType.DIAGONAL).count == 0) {
+            this.mutantFound.put(MutantType.DIAGONAL, new MutantFound(false, 0, 0));
+        }
+    }
+
+    void initializeDiagonalReverse() {
+        this.mutantFound.get(MutantType.DIAGONALREVERSE).count--;
+        if (this.mutantFound.get(MutantType.DIAGONALREVERSE).count == 0) {
+            this.mutantFound.put(MutantType.DIAGONALREVERSE, new MutantFound(false, 0, 0));
         }
     }
 
@@ -139,4 +176,23 @@ public class MutantBusiness {
     public int getCountDna() {
         return countDna;
     }
+
+    private class MutantFound {
+        MutantFound(boolean found, int line, int column) {
+            this.found = found;
+            this.line = line;
+            this.column = column;
+            this.column = 3;
+        }
+
+        boolean found;
+        int line;
+        int column;
+        int count;
+    }
+
+    private enum MutantType {
+        LINE, COLUMN, DIAGONALREVERSE, DIAGONAL
+    }
 }
+
