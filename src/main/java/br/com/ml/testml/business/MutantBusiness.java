@@ -3,7 +3,6 @@ package br.com.ml.testml.business;
 import br.com.ml.testml.exception.MutantException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -69,7 +68,7 @@ public class MutantBusiness {
 
     static void isMutantValid(String [] dna) throws MutantException {
         if (dna == null || dna[0] == null || dna.length <= 0) {
-            throw new MutantException();
+            throw new MutantException("Dna invalidate");
         }
         int dnaLength = dna[0].length();
         boolean[] ret = {true};
@@ -81,7 +80,7 @@ public class MutantBusiness {
             }
         }
         if (!ret[0]) {
-            throw new MutantException();
+            throw new MutantException("Dna invalidate");
         }
     }
 

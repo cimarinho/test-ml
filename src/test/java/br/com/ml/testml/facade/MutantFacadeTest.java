@@ -23,32 +23,32 @@ public class MutantFacadeTest extends TestMlApplicationTests {
 
     @Test
     public void not_is_mutant() throws MutantException {
-        String [] dna =  new String[]{"TTTCGA", "CAGTGC", "TTATGT", "AGAATG", "CCGCTA", "TCACTG"};
+        String[] dna = new String[]{"TTTCGA", "CAGTGC", "TTATGT", "AGAATG", "CCGCTA", "TCACTG"};
         assertFalse(this.mutantFacade.isMutant(dna));
     }
 
     @Test(expected = MutantException.class)
     public void error() throws MutantException {
-        String [] dna =  new String[10];
+        String[] dna = new String[10];
         assertFalse(this.mutantFacade.isMutant(dna));
     }
 
     @Test(expected = MutantException.class)
     public void error_item() throws MutantException {
-        String [] dna =  new String[]{"TTTCGA", "CAGTGC", "TTATGT", "AGAATG", "CCGCTA", null};
+        String[] dna = new String[]{"TTTCGA", "CAGTGC", "TTATGT", "AGAATG", "CCGCTA", null};
         assertFalse(this.mutantFacade.isMutant(dna));
     }
 
     @Test
-    public void saveMutant()  {
-        String [] dna =  new String[]{"TTTCGA", "CAGTGC", "TTATGT", "AGAATG", "CCGCTA", null};
-        MutantEntity mutantEntity =  this.mutantFacade.saveMutant(new MutantEntity(String.join(", ",dna), true));
+    public void saveMutant() {
+        String[] dna = new String[]{"TTTCGA", "CAGTGC", "TTATGT", "AGAATG", "CCGCTA", null};
+        MutantEntity mutantEntity = this.mutantFacade.saveMutant(new MutantEntity(String.join(", ", dna), true));
         assertNotNull(mutantEntity.getId());
     }
 
     @Test(expected = ConstraintViolationException.class)
-    public void erro_saveMutant()  {
-        MutantEntity mutantEntity =  this.mutantFacade.saveMutant(new MutantEntity());
+    public void erro_saveMutant() {
+        MutantEntity mutantEntity = this.mutantFacade.saveMutant(new MutantEntity());
         assertNotNull(mutantEntity.getId());
     }
 

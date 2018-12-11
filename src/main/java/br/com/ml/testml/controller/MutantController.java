@@ -2,8 +2,9 @@ package br.com.ml.testml.controller;
 
 import br.com.ml.testml.dto.MutantDTO;
 import br.com.ml.testml.entity.MutantEntity;
-import br.com.ml.testml.exception.MutantException;
 import br.com.ml.testml.facade.MutantFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ import static br.com.ml.testml.controller.Endpoints.ROOT;
 @RequestMapping(ROOT)
 public class MutantController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MutantController.class);
+
     @Autowired
     private MutantFacade mutantFacade;
 
@@ -30,6 +33,7 @@ public class MutantController {
             }
             this.mutantFacade.saveMutant(new MutantEntity(String.join(", ", mutantDTO.getDna()), isMutant));
         } catch (Exception e) {
+            LOGGER.debug("Erro no DNA", e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(HttpStatus.OK);
