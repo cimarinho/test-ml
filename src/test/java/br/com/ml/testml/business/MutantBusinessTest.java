@@ -4,7 +4,7 @@ import br.com.ml.testml.exception.MutantException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class MutantBusinessTest {
 
@@ -29,9 +29,8 @@ public class MutantBusinessTest {
 
     @Test
     public void not_isMutant() throws MutantException {
-        String [] dna =  new String[]{"ATTCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCGCTA", "TCACTG"};
-        MutantBusiness mutant = MutantBusiness.getMutant(dna);
-        assertEquals(mutant.getCountDna(), 0);
+        String [] dna =  new String[]{"TTTCGA", "CAGTGC", "TTATGT", "AGAATG", "CCGCTA", "TCACTG"};
+        assertFalse(MutantBusiness.getMutant(dna).isMutant());
     }
 
     @Test

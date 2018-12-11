@@ -3,6 +3,7 @@ package br.com.ml.testml.business;
 import br.com.ml.testml.exception.MutantException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -33,10 +34,17 @@ public class MutantBusiness {
     }
 
     public static MutantBusiness getMutant(String[] dna) throws MutantException {
+        isMutantValid(dna);
+        int wordSize = dna[0].length();
         MutantBusiness mutant = new MutantBusiness();
         mutant.dna = dna;
         mutant.wordSize = dna[0];
-        mutant.isMutantValid();
+        mutant.verifyMutant = new char[dna.length][wordSize];
+        for (int i = 0; i < dna.length; i++) {
+            for (int j = 0; j < wordSize; j++) {
+                mutant.verifyMutant[i][j] = dna[i].charAt(j);
+            }
+        }
         return mutant;
     }
 
@@ -59,11 +67,14 @@ public class MutantBusiness {
         return false;
     }
 
-    void isMutantValid() throws MutantException {
-        int dnaLength = wordSize.length();
+    static void isMutantValid(String [] dna) throws MutantException {
+        if (dna == null || dna[0] == null || dna.length <= 0) {
+            throw new MutantException();
+        }
+        int dnaLength = dna[0].length();
         boolean[] ret = {true};
         for (int item = 0; item < dna.length; item++) {
-            if (!Pattern.matches("^[ATCG]*", dna[item]) ||
+            if (dna[item] == null || !Pattern.matches("^[ATCG]*", dna[item]) ||
                     dna[item].length() != dnaLength) {
                 ret[0] = false;
                 break;
@@ -71,12 +82,6 @@ public class MutantBusiness {
         }
         if (!ret[0]) {
             throw new MutantException();
-        }
-        this.verifyMutant = new char[dna.length][wordSize.length()];
-        for (int i = 0; i < dna.length; i++) {
-            for (int j = 0; j < wordSize.length(); j++) {
-                verifyMutant[i][j] = dna[i].charAt(j);
-            }
         }
     }
 
