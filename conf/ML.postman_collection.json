@@ -1,0 +1,90 @@
+{
+	"info": {
+		"_postman_id": "e19cf4a5-5e0e-4522-9274-9dc2d3bef21a",
+		"name": "ML",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "mutant",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.api+json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"dna\": [\"ATGCGA\", \"AAGTGC\", \"ATATGT\", \"AGAAGG\", \"CCCCTA\", \"TCACMTG\"]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/mutant",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mutant"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "stats",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.api+json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://api.memed.com.br/v1/apresentacoes?filter[categoria]=industrializados&filter[q]=roacutan&api-key=$2y$10$emcXksEjVRdNRJfqZ28R1uGC/gjMlwfEgkoCIYC9BeZpe19FQjlpy&secret-key=$2y$10$PzAgbyDM39Kp.tK.BaODQOGJL/.ZHanVPz3MptHJi5EDalLr0qGBC",
+					"protocol": "https",
+					"host": [
+						"api",
+						"memed",
+						"com",
+						"br"
+					],
+					"path": [
+						"v1",
+						"apresentacoes"
+					],
+					"query": [
+						{
+							"key": "filter[categoria]",
+							"value": "industrializados"
+						},
+						{
+							"key": "filter[q]",
+							"value": "roacutan"
+						},
+						{
+							"key": "api-key",
+							"value": "$2y$10$emcXksEjVRdNRJfqZ28R1uGC/gjMlwfEgkoCIYC9BeZpe19FQjlpy"
+						},
+						{
+							"key": "secret-key",
+							"value": "$2y$10$PzAgbyDM39Kp.tK.BaODQOGJL/.ZHanVPz3MptHJi5EDalLr0qGBC"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

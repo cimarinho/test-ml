@@ -1,0 +1,14 @@
+spring:
+  redis:
+    host: localhost
+    password:
+  datasource:
+    url: jdbc:mysql://localhost:3306/ml?autoReconnect=true&useSSL=false
+    username: usuario
+    password: Teste!23
+    driver-class-name: com.mysql.jdbc.Driver
+    jmx-enabled: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
