@@ -70,11 +70,16 @@ public class MutantBusiness {
         if (dna == null || dna[0] == null || dna.length <= 0) {
             throw new MutantException("Dna invalidate");
         }
-        int dnaLength = dna[0].length();
+        int dnaWordLength = dna[0].length();
+
+        if (dna.length != dnaWordLength){
+            throw new MutantException("Dna invalidate");
+        }
+
         boolean[] ret = {true};
         for (int item = 0; item < dna.length; item++) {
             if (dna[item] == null || !Pattern.matches("^[ATCG]*", dna[item]) ||
-                    dna[item].length() != dnaLength) {
+                    dna[item].length() != dnaWordLength) {
                 ret[0] = false;
                 break;
             }
