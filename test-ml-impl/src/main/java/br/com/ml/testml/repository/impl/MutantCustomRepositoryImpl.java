@@ -23,16 +23,16 @@ public class MutantCustomRepositoryImpl implements MutantCustomRepository {
 
     public List<Stats> getStats() {
 
-        Aggregation agg1 = newAggregation(
+        Aggregation aggregation = newAggregation(
                 group("mutant").count().as("count"),
                 project("count").and("isMutant").previousOperation(),
                 sort(Sort.Direction.DESC, "count")
         );
 
-        AggregationResults<Stats> groupResults
-                = mongoTemplate.aggregate(agg1, Mutant.class, Stats.class);
+        AggregationResults<Stats> aggregationResults
+                = mongoTemplate.aggregate(aggregation, Mutant.class, Stats.class);
 
-        return groupResults.getMappedResults();
+        return aggregationResults.getMappedResults();
 
     }
 }

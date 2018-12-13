@@ -43,8 +43,7 @@ public class MutantController {
     }
 
     @RequestMapping(value = {"/stats"}, method = GET)
-    public StatsDTO get() throws Exception {
-
+    public StatsDTO get() {
         return mutantFacade.getStats();
     }
 

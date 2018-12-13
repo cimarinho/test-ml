@@ -5,10 +5,6 @@ public class Stats {
     private Long count;
     private boolean isMutant;
 
-    public Stats(){
-
-    }
-
     public Long getCount() {
         return count;
     }
