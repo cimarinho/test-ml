@@ -27,7 +27,7 @@ public class Mutant implements Serializable {
 
     private boolean mutant;
 
-    public Date systemDate;
+    private Date systemDate;
 
     public String getId() {
         return id;

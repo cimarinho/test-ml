@@ -6,8 +6,6 @@ import br.com.ml.testml.exception.MutantException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.validation.ConstraintViolationException;
-
 import static org.junit.Assert.*;
 
 public class MutantFacadeTest extends TestMlApplicationTests {

@@ -23,23 +23,22 @@ public class MutantFacade {
     private MutantRepository mutantRepository;
 
     public boolean isMutant(String[] dna) throws MutantException {
-        boolean isMutant = MutantBusiness.getMutant(dna).isMutant();
-        return isMutant;
+        return MutantBusiness.getMutant(dna).isMutant();
     }
 
     public StatsDTO getStats() {
         List<Stats> stats = mutantCustomRepository.getStats();
-        Long mutant = 0L, notMutant = 0L, total = 0L;
+        Long notMutant = 0L, total = 0L;
         if (stats != null && !stats.isEmpty()) {
-            Optional<Stats> countMutant = stats.stream().filter(t -> ! t.isMutant()).findFirst();
+            Optional<Stats> countMutant = stats.stream().filter(t -> !t.isMutant()).findFirst();
             Optional<Stats> countNotMutant = stats.stream().filter(t -> t.isMutant()).findFirst();
             if (countMutant.isPresent()) {
-                mutant = countMutant.get().getCount();
-                total+=mutant;
+                total += countMutant.get().getCount();
+                ;
             }
             if (countNotMutant.isPresent()) {
                 notMutant = countNotMutant.get().getCount();
-                total+=notMutant;
+                total += notMutant;
             }
         }
         return new StatsDTO(notMutant, total);
