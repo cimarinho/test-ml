@@ -1,7 +1,7 @@
 package br.com.ml.testml.facade;
 
 import br.com.ml.testml.TestMlApplicationTests;
-import br.com.ml.testml.entity.MutantEntity;
+import br.com.ml.testml.domain.Mutant;
 import br.com.ml.testml.exception.MutantException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,14 +42,7 @@ public class MutantFacadeTest extends TestMlApplicationTests {
     @Test
     public void saveMutant() {
         String[] dna = new String[]{"TTTCGA", "CAGTGC", "TTATGT", "AGAATG", "CCGCTA", null};
-        MutantEntity mutantEntity = this.mutantFacade.saveMutant(new MutantEntity(String.join(", ", dna), true));
+        Mutant mutantEntity = this.mutantFacade.saveMutant(new Mutant(String.join(", ", dna), true));
         assertNotNull(mutantEntity.getId());
     }
-
-    @Test(expected = ConstraintViolationException.class)
-    public void erro_saveMutant() {
-        MutantEntity mutantEntity = this.mutantFacade.saveMutant(new MutantEntity());
-        assertNotNull(mutantEntity.getId());
-    }
-
 }

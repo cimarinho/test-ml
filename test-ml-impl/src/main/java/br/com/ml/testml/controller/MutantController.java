@@ -2,7 +2,7 @@ package br.com.ml.testml.controller;
 
 import br.com.ml.testml.dto.MutantDTO;
 import br.com.ml.testml.dto.StatsDTO;
-import br.com.ml.testml.entity.MutantEntity;
+import br.com.ml.testml.domain.Mutant;
 import br.com.ml.testml.facade.MutantFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,20 +30,20 @@ public class MutantController {
     public ResponseEntity<Void> create(@RequestBody MutantDTO mutantDTO) {
         try {
             boolean isMutant = mutantFacade.isMutant(mutantDTO.getDna());
-            this.mutantFacade.saveMutant(new MutantEntity(String.join(", ", mutantDTO.getDna()), isMutant));
+            this.mutantFacade.saveMutant(new Mutant(String.join(", ", mutantDTO.getDna()), isMutant));
             if (!mutantFacade.isMutant(mutantDTO.getDna())) {
                 return new ResponseEntity(HttpStatus.FORBIDDEN);
             }
         } catch (Exception e) {
-            LOGGER.debug("Erro no DNA", e);
+            e.printStackTrace();
+            LOGGER.error("Erro no DNA", e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value = {"/stats"}, method = GET)
-    public StatsDTO get() throws Exception {
-
+    public StatsDTO get() {
         return mutantFacade.getStats();
     }
 

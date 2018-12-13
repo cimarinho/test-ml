@@ -1,8 +1,5 @@
-spring:
-    jpa:
-      show-sql: true
-      hibernate:
-        ddl-auto: create-drop
-      database: HSQL
-    autoconfigure:
-      exclude: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+logging:
+  level:
+    org.springframework.security: FATAL
+    org.springframework.web: FATAL
+    br.com.ml.testml.exception: OFF

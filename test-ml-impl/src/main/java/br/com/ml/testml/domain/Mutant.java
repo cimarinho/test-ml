@@ -1,48 +1,39 @@
-package br.com.ml.testml.entity;
+package br.com.ml.testml.domain;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import org.springframework.data.annotation.Id;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-@Entity
-@Table(name = "MUTANT")
-public class MutantEntity implements Serializable {
+public class Mutant implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public MutantEntity() {
+    public Mutant() {
         this.systemDate = new Date();
     }
 
-    public MutantEntity(String dna, boolean mutant) {
+    public Mutant(String dna, boolean mutant) {
         this.dna = dna;
         this.mutant = mutant;
         this.systemDate = new Date();
     }
 
     @Id
-    @Column(name = "ID")
-    @GeneratedValue
-    private Long id;
+    private String id;
 
-    @NotNull
-    @Column(name = "DNA")
     private String dna;
 
-    @NotNull
-    @Column(name = "MUTANT")
     private boolean mutant;
 
-    @Column(name = "SYSTEM_DATE")
     public Date systemDate;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -72,7 +63,7 @@ public class MutantEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "MutantEntity{" +
+        return "Mutant{" +
                 "id=" + id +
                 ", dna='" + dna + '\'' +
                 ", mutant=" + mutant +
@@ -84,7 +75,7 @@ public class MutantEntity implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MutantEntity that = (MutantEntity) o;
+        Mutant that = (Mutant) o;
         return mutant == that.mutant &&
                 Objects.equals(id, that.id) &&
                 Objects.equals(dna, that.dna) &&
