@@ -1,0 +1,17 @@
+https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
+sudo service mongod start
+mongo
+sudo service mongod stop
+
+use ml-test
+
+db.createCollection("mutants");
+
+db.pets.insertMany([
+  {
+    "dna": "ATGCGA, AAGTGC, TTATGT, AGAAGG, CCCCTA, TCACTG",
+    "mutant" : true,
+    "systemDate" : new Date()
+  }
+ ]);
+

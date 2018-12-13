@@ -1,13 +1,12 @@
-package br.com.ml.testml.pojo;
+package br.com.ml.testml.domain;
 
 public class Stats {
 
     private Long count;
     private boolean isMutant;
 
-    public Stats(Long count, boolean isMutant) {
-        this.count = count;
-        this.isMutant = isMutant;
+    public Stats(){
+
     }
 
     public Long getCount() {
@@ -16,5 +15,13 @@ public class Stats {
 
     public boolean isMutant() {
         return isMutant;
+    }
+
+    public void setCount(Long count) {
+        this.count = count;
+    }
+
+    public void setMutant(boolean mutant) {
+        isMutant = mutant;
     }
 }
