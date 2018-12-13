@@ -12,7 +12,7 @@ public class MutantBusinessTest {
 
     @Before
     public void setup() throws MutantException {
-        String [] dna =  new String[]{"AAGCGATTGC", "AAATACATCC", "ATAAATACCC", "AGAAACATGT", "CCCCCCCCCC", "TCACTGGTGG"};
+        String [] dna =  new String[]{"AAGCGA", "AAATAC", "ATAAAT", "AGAAAC", "CCCCCC", "TCACTG"};
         this.mutant = MutantBusiness.getMutant(dna);
     }
 

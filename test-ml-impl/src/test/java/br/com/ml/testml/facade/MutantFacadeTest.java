@@ -17,7 +17,7 @@ public class MutantFacadeTest extends TestMlApplicationTests {
 
     @Test
     public void is_mutant() throws MutantException {
-        String[] dna = new String[]{"AAGCGATTGC", "AAATACATCC", "ATAAATACCC", "AGAAACATGT", "CCCCCCCCCC", "TCACTGGTGG"};
+        String [] dna =  new String[]{"AAGCGA", "AAATAC", "ATAAAT", "AGAAAC", "CCCCCC", "TCACTG"};
         assertTrue(this.mutantFacade.isMutant(dna));
     }
 
