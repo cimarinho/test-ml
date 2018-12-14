@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>test-ml-impl</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <name>test-ml-impl</name>
     <description>Test ML</description>
@@ -100,6 +100,15 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.2</version>
             </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <executable>true</executable>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
