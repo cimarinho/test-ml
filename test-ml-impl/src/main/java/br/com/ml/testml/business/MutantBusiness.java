@@ -102,7 +102,7 @@ public class MutantBusiness {
         } else if (this.mutantFound.get(MutantType.LINE).found) {
             this.mutantFound.get(MutantType.LINE).count--;
             if (this.mutantFound.get(MutantType.LINE).count == 0) {
-                this.mutantFound.put(MutantType.LINE, new MutantFound(false, 0, 0));
+                initializeLine();
             }
         }
     }
@@ -191,7 +191,7 @@ public class MutantBusiness {
             this.found = found;
             this.line = line;
             this.column = column;
-            this.column = 3;
+            this.count = 3;
         }
 
         boolean found;

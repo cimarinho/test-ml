@@ -3,8 +3,10 @@ package br.com.ml.testml.business;
 import br.com.ml.testml.exception.MutantException;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 public class MutantBusinessTest {
 
@@ -36,6 +38,14 @@ public class MutantBusinessTest {
     @Test
     public void lines_is_mutant() {
         mutant.lines(4,1,10);
+        assertEquals(mutant.getCountDna(), 1);
+    }
+    @Test
+    public void lines_found() throws MutantException {
+        String [] dna =  new String[]{"CCCCCC", "AAATAC", "ATAAAT", "AGAAAC", "CCCCCC", "TCACTG"};
+        this.mutant = MutantBusiness.getMutant(dna);
+        mutant.lines(0,0,10);
+        mutant.lines(1,1,10);
         assertEquals(mutant.getCountDna(), 1);
     }
 

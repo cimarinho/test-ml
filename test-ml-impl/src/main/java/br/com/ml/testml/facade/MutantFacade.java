@@ -28,20 +28,19 @@ public class MutantFacade {
 
     public StatsDTO getStats() {
         List<Stats> stats = mutantCustomRepository.getStats();
-        Long notMutant = 0L, total = 0L;
+        Long mutantDna = 0L, total = 0L;
         if (stats != null && !stats.isEmpty()) {
-            Optional<Stats> countMutant = stats.stream().filter(t -> !t.isMutant()).findFirst();
-            Optional<Stats> countNotMutant = stats.stream().filter(t -> t.isMutant()).findFirst();
+            Optional<Stats> countMutant = stats.stream().filter(t ->  t.isMutant()).findFirst();
+            Optional<Stats> countNotMutant = stats.stream().filter(t -> !t.isMutant()).findFirst();
             if (countMutant.isPresent()) {
+                mutantDna = countMutant.get().getCount();
                 total += countMutant.get().getCount();
-                ;
             }
             if (countNotMutant.isPresent()) {
-                notMutant = countNotMutant.get().getCount();
-                total += notMutant;
+                total += countNotMutant.get().getCount();
             }
         }
-        return new StatsDTO(notMutant, total);
+        return new StatsDTO(mutantDna, total);
     }
 
     public Mutant saveMutant(Mutant mutantEntity) {

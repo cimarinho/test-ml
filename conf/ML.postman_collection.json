@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e19cf4a5-5e0e-4522-9274-9dc2d3bef21a",
+		"_postman_id": "4a882358-22f3-44a6-923c-15d068640cad",
 		"name": "ML",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -21,7 +21,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"dna\": [\"ATGCGA\", \"AAGTGC\", \"ATATGT\", \"AGAAGG\", \"CCCCTA\", \"TCACMTG\"]\n}"
+					"raw": "{\n\"dna\": [\"ATGCGA\", \"AAGTGC\", \"ATATGT\", \"AGAAGG\", \"CCCCTA\", \"TCACTG\"]\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/mutant",
@@ -52,34 +52,35 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://api.memed.com.br/v1/apresentacoes?filter[categoria]=industrializados&filter[q]=roacutan&api-key=$2y$10$emcXksEjVRdNRJfqZ28R1uGC/gjMlwfEgkoCIYC9BeZpe19FQjlpy&secret-key=$2y$10$PzAgbyDM39Kp.tK.BaODQOGJL/.ZHanVPz3MptHJi5EDalLr0qGBC",
-					"protocol": "https",
+					"raw": "http://localhost:8080/stats?",
+					"protocol": "http",
 					"host": [
-						"api",
-						"memed",
-						"com",
-						"br"
+						"localhost"
 					],
+					"port": "8080",
 					"path": [
-						"v1",
-						"apresentacoes"
+						"stats"
 					],
 					"query": [
 						{
 							"key": "filter[categoria]",
-							"value": "industrializados"
+							"value": "industrializados",
+							"disabled": true
 						},
 						{
 							"key": "filter[q]",
-							"value": "roacutan"
+							"value": "roacutan",
+							"disabled": true
 						},
 						{
 							"key": "api-key",
-							"value": "$2y$10$emcXksEjVRdNRJfqZ28R1uGC/gjMlwfEgkoCIYC9BeZpe19FQjlpy"
+							"value": "$2y$10$emcXksEjVRdNRJfqZ28R1uGC/gjMlwfEgkoCIYC9BeZpe19FQjlpy",
+							"disabled": true
 						},
 						{
 							"key": "secret-key",
-							"value": "$2y$10$PzAgbyDM39Kp.tK.BaODQOGJL/.ZHanVPz3MptHJi5EDalLr0qGBC"
+							"value": "$2y$10$PzAgbyDM39Kp.tK.BaODQOGJL/.ZHanVPz3MptHJi5EDalLr0qGBC",
+							"disabled": true
 						}
 					]
 				}
